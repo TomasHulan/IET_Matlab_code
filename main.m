@@ -17,7 +17,7 @@ function varargout = main(varargin)
 %
 %      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
 %      instance to run (singleton)".
-%
+% Tomas Hulan
 % See also: GUIDE, GUIDATA, GUIHANDLES
 
 % Edit the above text to modify the response to help main
@@ -50,14 +50,14 @@ function mainTimerFunction(obj,event,hFigure)
     try
         handles.temperature=sendCommand(handles.s,'AT:',[]);
         
-%       zobrazovanie aktu·lnej teploty v hlavnom okne
+%       zobrazovanie aktu√°lnej teploty v hlavnom okne
         if isempty(handles.temperature) && strcmp(get(handles.pushbutton2,'String'),'Disconnect')
             set(handles.text11,'String','error');
             set(handles.axes1,'Units','pixels');
 %             axes(handles.axes1);
             imshow(handles.oStat, 'Parent', handles.axes1);
         elseif ~isempty(handles.temperature) && strcmp(get(handles.pushbutton2,'String'),'Disconnect')
-            set(handles.text11,'String',[handles.temperature ' ∞C']);
+            set(handles.text11,'String',[handles.temperature ' ¬∞C']);
             set(handles.axes1,'Units','pixels');
 %             axes(handles.axes1);
             imshow(handles.gStat,'Parent', handles.axes1);
@@ -67,10 +67,10 @@ function mainTimerFunction(obj,event,hFigure)
 %             axes(handles.axes1);
             imshow(handles.rStat,'Parent', handles.axes1);
         end
-%       reûimi regul·cie
-%       handles.reg=0 - regul·cia vypnut·
-%       handles.reg=1 - norm·lny reûim
-%       handles.reg=2 - testovanie pid konöt·nt (v‰Ëöia vzorkovacia frekvencia, len z·znam teploty a Ëasu)
+%       re≈æimi regul√°cie
+%       handles.reg=0 - regul√°cia vypnut√°
+%       handles.reg=1 - norm√°lny re≈æim
+%       handles.reg=2 - testovanie pid kon≈°t√°nt (v√§√®≈°ia vzorkovacia frekvencia, len z√°znam teploty a √®asu)
         
         switch handles.reg
             case 0
@@ -87,9 +87,9 @@ function mainTimerFunction(obj,event,hFigure)
                 end
                 if max(y)>treshold
                     x = linspace(0,str2num(get(handles.edit3,'String')),size(y,1));
-                    % ak by bolo potrebnÈ doplniù sem v˝poËet Ëasu
-                    % ˙deru aby bolo t presn· hodnota
-                    % t=t- str2num(get(handles.edit3,'String')) -Ëas ˙deru od zaËiatku
+                    % ak by bolo potrebn√© doplni¬ù sem v√Ωpo√®et √®asu
+                    % √∫deru aby bolo t presn√° hodnota
+                    % t=t- str2num(get(handles.edit3,'String')) -√®as √∫deru od za√®iatku
                     plot(handles.axes3,x,y);
                     
                     xlabel(handles.axes3,'Time (s)')
@@ -119,7 +119,7 @@ function mainTimerFunction(obj,event,hFigure)
                         yyaxis(handles.axes5,'left');
                             scatter(handles.axes5,handles.ResDataTemp(:,1),handles.ResDataTime(:,2),10,'filled');
                             ylabel(handles.axes5,'Res. frequency (Hz)')
-                        xlabel(handles.axes5,'Temperature (∞C)');
+                        xlabel(handles.axes5,'Temperature (¬∞C)');
                     else
                         yyaxis(handles.axes5,'right');
                             scatter(handles.axes5,handles.ResDataTime(:,1),handles.ResDataTime(:,3),10,'filled');
@@ -154,16 +154,16 @@ function mainTimerFunction(obj,event,hFigure)
 %                     plot(handles.axes3,handles.pidTestData);
                     plot(handles.axes3,handles.pidTestData(:,1),handles.pidTestData(:,2),handles.pidTestData(:,3),handles.pidTestData(:,4));
                     xlabel(handles.axes3,'Time (min)', 'fontSize', handles.fontSize);
-                    ylabel(handles.axes3,'Temperature (∞C)', 'fontSize', handles.fontSize);
+                    ylabel(handles.axes3,'Temperature (¬∞C)', 'fontSize', handles.fontSize);
                 end
             otherwise
         end
     catch ME
         switch ME.identifier
         case 'MATLAB:serial:fopen:opfailed'
-            waitfor(msgbox('V zadanom porte sa nenach·dza regul·tor', 'Pripojenie','error'));
+            waitfor(msgbox('V zadanom porte sa nenach√°dza regul√°tor', 'Pripojenie','error'));
         case 'MATLAB:serial:fprintf:opfailed'
-            waitfor(msgbox('Pripojenie zlyhalo, pok˙siù sa op‰ù nadviazaù spojenie?', 'Regulator','error'));
+            waitfor(msgbox('Pripojenie zlyhalo, pok√∫si¬ù sa op√§¬ù nadviaza¬ù spojenie?', 'Regulator','error'));
             try
                 if ~isempty(instrfind)
                     fclose(instrfind);
@@ -180,15 +180,15 @@ function mainTimerFunction(obj,event,hFigure)
             catch ME
                 switch ME.identifier
                     case 'MATLAB:serial:fopen:opfailed'
-                        waitfor(msgbox('V zadanom porte sa nenach·dza regul·tor', 'Pripojenie','error'));
+                        waitfor(msgbox('V zadanom porte sa nenach√°dza regul√°tor', 'Pripojenie','error'));
                     case 'MATLAB:serial:fprintf:opfailed'
-                        waitfor(msgbox('Pripojenie zlyhalo, pok˙siù sa op‰ù nadviazaù spojenie?', 'Regulator','error'));
+                        waitfor(msgbox('Pripojenie zlyhalo, pok√∫si¬ù sa op√§¬ù nadviaza¬ù spojenie?', 'Regulator','error'));
                     otherwise
                         rethrow(ME)
                 end
             end
         case 'MATLAB:timer:badcallback'
-            waitfor(msgbox('Chyba ËasovaËu', 'Timer','error'));
+            waitfor(msgbox('Chyba √®asova√®u', 'Timer','error'));
         otherwise
             rethrow(ME)
         end
@@ -228,14 +228,14 @@ function main_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for main
 handles.output = hObject;
 
-% zmaûe vöetky timery a pripojenia
+% zma≈æe v≈°etky timery a pripojenia
 delete(timerfindall);
 delete(instrfindall);
-% definÌcia timeru musÌ byù v tejto funkcii, inak by sa nedala pridaù do handles  
+% defin√≠cia timeru mus√≠ by¬ù v tejto funkcii, inak by sa nedala prida¬ù do handles  
 
-    handles.rStat = imread('img/r.jpg'); % obr·tok ËervenÈho kr˙ûku
-    handles.oStat = imread('img/o.jpg'); % obr·tok oranûovÈho kr˙ûku
-    handles.gStat = imread('img/g.jpg'); % obr·tok zelenÈho kr˙ûku
+    handles.rStat = imread('img/r.jpg'); % obr√°tok √®erven√©ho kr√∫≈æku
+    handles.oStat = imread('img/o.jpg'); % obr√°tok oran≈æov√©ho kr√∫≈æku
+    handles.gStat = imread('img/g.jpg'); % obr√°tok zelen√©ho kr√∫≈æku
     
     handles.RData=[];
     handles.s=[];
@@ -248,7 +248,7 @@ delete(instrfindall);
     handles.temperature=[];
     handles.ResDataTemp=[];
     handles.ResDataTime=[];
-    handles.SData=struct(... % ötrukt˙ra, do ktorej sa ukladaj˙ vöetky parametre vzorky a teplotnÈho programu
+    handles.SData=struct(... % ≈°trukt√∫ra, do ktorej sa ukladaj√∫ v≈°etky parametre vzorky a teplotn√©ho programu
         'TableT',[],...
         'ProgT',[0 0],...
         'SampleName','',...
@@ -282,12 +282,12 @@ delete(instrfindall);
             )...
     );
 
-    % nastavenie poËiatoËnÈho stavu kontroliek:
-    % - pripojenie k regul·toru
+    % nastavenie po√®iato√®n√©ho stavu kontroliek:
+    % - pripojenie k regul√°toru
     set(handles.axes1,'Units','pixels');
     axes(handles.axes1);
     imshow(handles.rStat);
-    % - nastavenie ˙dajov a teplotnÈho programu
+    % - nastavenie √∫dajov a teplotn√©ho programu
     set(handles.axes2,'Units','pixels');
     axes(handles.axes2);
     imshow(handles.rStat);
@@ -307,15 +307,15 @@ delete(instrfindall);
     
     axes(handles.axes5)
     hold on
-    xlabel('Temperature (∞C)', 'fontSize', handles.fontSize);
+    xlabel('Temperature (¬∞C)', 'fontSize', handles.fontSize);
     yyaxis left
     ylabel('Res. frequency (Hz)', 'fontSize', handles.fontSize);
     yyaxis right
     ylabel('Log. decrement', 'fontSize', handles.fontSize);
     hold off
     guidata(hObject, handles);
-% timer, ktor˝ deteguje pripojenie regul·turu a priebeûne ËÌta teplotu, na zaËiatku kaûd˙ pol sekundu
-% po spustenÌ merania kaûd˝ch x sek˙nd
+% timer, ktor√Ω deteguje pripojenie regul√°turu a priebe≈æne √®√≠ta teplotu, na za√®iatku ka≈æd√∫ pol sekundu
+% po spusten√≠ merania ka≈æd√Ωch x sek√∫nd
  handles.mainTimer = timer('BusyMode', 'queue', 'ExecutionMode','fixedSpacing', 'Period', 0.5);
  set(handles.mainTimer, 'TimerFcn', {@mainTimerFunction,hObject});
  start(handles.mainTimer)
@@ -346,7 +346,7 @@ function pushbutton4_Callback(hObject, eventdata, handles)
 set(handles.pushbutton4,'Enable','off');
 set(handles.pushbutton5,'Enable','on');
 if get(handles.checkbox6,'Value')
-    % Test PID konöt·nt
+    % Test PID kon≈°t√°nt
     stop(handles.mainTimer);
     handles.pidTestData=[];
     sendTemperatureProgram(handles.s,handles.SData);
@@ -377,7 +377,7 @@ if get(handles.checkbox6,'Value')
     sendCommand(handles.s,'REGSTART:',[]);
     start(handles.mainTimer);
 else
-    % Hlavn˝ program
+    % Hlavn√Ω program
     stop(handles.mainTimer);
     sendTemperatureProgram(handles.s,handles.SData);
     if(~strcmp(confirmation(handles.s,handles.SData),'Yes'))
@@ -668,7 +668,7 @@ if get(hObject,'Value')
     axes(handles.axes3)
     xlabel('Time (min)', 'fontSize', handles.fontSize);
 %     yyaxis left
-    ylabel('Temperature (∞C)', 'fontSize', handles.fontSize);
+    ylabel('Temperature (¬∞C)', 'fontSize', handles.fontSize);
 %     yyaxis right
 %     ylabel('Temp. program', 'fontSize', handles.fontSize);
     
@@ -761,7 +761,7 @@ if isequal(get(handles.pushbutton2,'String'),'Connect')
     catch ME
         switch ME.identifier
         case 'MATLAB:serial:fopen:opfailed'
-            waitfor(msgbox('V zadanom porte sa nenach·dza regul·tor', 'Pripojenie','error'));
+            waitfor(msgbox('V zadanom porte sa nenach√°dza regul√°tor', 'Pripojenie','error'));
         otherwise
             rethrow(ME)
         end
@@ -791,7 +791,7 @@ function pushbutton3_Callback(hObject, eventdata, handles)
 
 %     handles.sRData=get(handles.pushbutton3,'UserData');
 %     stop(handles.mainTimer);
-    handles.RData=RegConfig(handles.s,handles.RData); % nastavenie PID konöt·nt a parametrov termoËl·nku
+    handles.RData=RegConfig(handles.s,handles.RData); % nastavenie PID kon≈°t√°nt a parametrov termo√®l√°nku
 %     start(handles.mainTimer);
 %     set(handles.pushbutton3,'UserData',handles.sRData);
 guidata(hObject, handles);
@@ -908,7 +908,7 @@ if get(handles.radiobutton1,'Value')
     yyaxis(handles.axes5,'left');
         scatter(handles.axes5,handles.ResDataTemp(:,1),handles.ResDataTime(:,2),10,'filled');
         ylabel(handles.axes5,'Res. frequency (Hz)')
-    xlabel(handles.axes5,'Temperature (∞C)');
+    xlabel(handles.axes5,'Temperature (¬∞C)');
 else
     yyaxis(handles.axes5,'right');
         scatter(handles.axes5,handles.ResDataTime(:,1),handles.ResDataTime(:,3),10,'filled');
