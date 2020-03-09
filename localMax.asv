@@ -1,0 +1,33 @@
+function [f,X,T] = localMax(p,k)
+%vyberie pri kmitaní body, kde má funkcia
+%lokálne maximum
+%to isté ako funkcia ampCheck
+%p - vektor, harmonický priebeh
+%f - hodnoty vystupnych bodov, X - indexy lokalnych maxim
+%T - perioda maxim
+n = length(p);
+j = 1;
+pR = p(k+2:2*k+1);%body napravo
+pL = p(1:k);%body na¾avo
+m = 0;%index posledného maxima
+T = [];
+for i = 2:n-1
+    if all(pL < p(i)) && all(pR < p(i))
+        f(j) = p(i);  
+        pL = p(i);
+        if i<n-1
+            pR = p(i+2);
+        end
+        T(j) = i-m;
+        X(j) = i;
+        j = j+1;
+        m=i;
+    else
+        if i<n-1
+            pL = p(i-k+1:i);
+            pR = p(i+2);
+        end
+    end
+end
+T = round(mean(T));%priemerný rozostup maxím
+end
